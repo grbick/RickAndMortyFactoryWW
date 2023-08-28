@@ -1,0 +1,27 @@
+.sideModalWrapper {
+  width: 100%;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba($color: #000000, $alpha: 0.5);
+  z-index: 1;
+}
+
+.sideModalContent {
+  width: 70%;
+  height: 100vh;
+  padding-top: 30px;
+  background-color: blue;
+  color: white;
+}
+@media only screen and (min-width: 650px) {
+  .sideModalContent {
+    width: 35%;
+  }
+}
+
+.sideModalContent .ant-space > * {
+  margin-bottom: 20px;
+}

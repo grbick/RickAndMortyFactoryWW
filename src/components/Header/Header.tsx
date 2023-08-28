@@ -2,14 +2,14 @@ import { Button, Image, Input, Space, Dropdown } from "antd";
 import React, { useContext } from "react";
 import "./header.scss";
 import { CharacterContext } from "../../modules/characters/characters.context";
-import logo from "../../assets/Rick and Morty Logo Vector.svg";
+import logo from "../../assets/Rick and Morty Logo Vector.png";
 import type { MenuProps } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { useMediaQuery } from "react-responsive";
 
 const Header = () => {
   const { Search } = Input;
-  const { setUserInfo, queryParams, setQueryParams } =
+  const { setUserInfo, setQueryParams, setSideModal } =
     useContext(CharacterContext);
   let search: any;
 
@@ -18,19 +18,41 @@ const Header = () => {
     sessionStorage.setItem("userInfo", "false");
   }
 
-  function filterCharacters(name: string) {
-    setQueryParams({ ...queryParams, page: 1, name: name });
+  function filterCharactersByName(name: string) {
+    setQueryParams({
+      name: name,
+      page: 1,
+    });
   }
 
   const isDropdown = useMediaQuery({ query: "(min-width:760px)" });
   const items: MenuProps["items"] = [
     {
-      label: <Button href={'/home'} type="link">Home Page</Button>,
+      label: (
+        <Button href="/home" type="link">
+          Home Page
+        </Button>
+      ),
       key: "0",
     },
     {
-      label: <Button href={'/favorites'} type="link">Favorites</Button>,
+      label: (
+        <Button href="/favorites" type="link">
+          Favorites
+        </Button>
+      ),
       key: "1",
+    },
+    {
+      label: (
+        <Button
+          type="link"
+          onClick={() => setSideModal((prevState: boolean) => !prevState)}
+        >
+          Filter Characters
+        </Button>
+      ),
+      key: "2",
     },
     {
       label: (
@@ -45,35 +67,45 @@ const Header = () => {
   return (
     <div className="header">
       <div>
-      <Image src={logo} width={200} />
-      {isDropdown ? (
-        <Space>
-          <Button type="link">Home Page</Button>
-          <Button type="link">Favorites</Button>
-          <Button type="primary" onClick={logout}>
-            Log Out
-          </Button>
-        </Space>
-      ) : (
-        <>
-          <Dropdown menu={{ items }} trigger={["click"]}>
-            <Space>
-              <Button type="link">
-                Options
-                <DownOutlined />
-              </Button>
-            </Space>
-          </Dropdown>{" "}
-        </>
-      )}
+        <Image src={logo} width={200} />
+        {isDropdown ? (
+          <Space>
+            <Button href="/home" type="link">
+              Home Page
+            </Button>
+            <Button href="/favorites" type="link">
+              Favorites
+            </Button>
+            <Button
+              type="link"
+              onClick={() => setSideModal((prevState: boolean) => !prevState)}
+            >
+              Filter Characters
+            </Button>
+            <Button type="primary" onClick={logout}>
+              Log Out
+            </Button>
+          </Space>
+        ) : (
+          <>
+            <Dropdown menu={{ items }} trigger={["click"]}>
+              <Space>
+                <Button type="link">
+                  Options
+                  <DownOutlined />
+                </Button>
+              </Space>
+            </Dropdown>{" "}
+          </>
+        )}
       </div>
       <Search
         placeholder="search characters"
         style={{ width: 200 }}
-        onChange={(e) => {
+        onChange={(e: any) => {
           clearTimeout(search);
           search = setTimeout(() => {
-            filterCharacters(e.target.value);
+            filterCharactersByName(e.target.value);
           }, 500);
         }}
       />

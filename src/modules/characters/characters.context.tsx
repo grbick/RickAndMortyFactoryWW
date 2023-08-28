@@ -6,16 +6,23 @@ export interface ApiData {
 
 export interface Character {
   id: number;
-  age: number;
   name: string;
-  status: "dead" | "alive" | "unknown";
+  status: string;
   gender: string;
   image: string;
+  species: string;
+  location: {
+    name: string;
+    url: string;
+  };
 }
 
 export interface QueryParams {
   page: number;
-  name: string;
+  name?: string;
+  status?: string;
+  species?: string;
+  gender?: string;
 }
 
 type characterContextType = {
@@ -33,6 +40,10 @@ type characterContextType = {
   setQueryParams: React.Dispatch<React.SetStateAction<QueryParams>>;
   favorites: Character[];
   setFavorites: React.Dispatch<React.SetStateAction<Character[]>>;
+  sideModal: boolean;
+  setSideModal: React.Dispatch<React.SetStateAction<boolean>>;
+  modal: Character | null;
+  setModal: React.Dispatch<React.SetStateAction<Character | null>>;
 };
 type CharacterProviderProps = {
   children: React.ReactNode;
@@ -57,6 +68,8 @@ export const CharacterProvider = ({ children }: CharacterProviderProps) => {
     ? JSON.parse(favoritesFromSession)
     : [];
   const [favorites, setFavorites] = useState<Character[]>(initialFavorites);
+  const [modal, setModal] = useState<Character | null>(null);
+  const [sideModal, setSideModal] = useState<boolean>(false);
 
   return (
     <CharacterContext.Provider
@@ -73,6 +86,10 @@ export const CharacterProvider = ({ children }: CharacterProviderProps) => {
         setQueryParams,
         favorites,
         setFavorites,
+        modal,
+        setModal,
+        sideModal,
+        setSideModal,
       }}
     >
       {children}

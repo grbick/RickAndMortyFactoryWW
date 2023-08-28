@@ -1,8 +1,8 @@
 import React, { Suspense, lazy, useContext } from "react";
-import LoginPage from "./pages/LoginPage/LoginPage";
 import "./App.css";
 import { Route, Navigate, Routes } from "react-router-dom";
 import { CharacterContext } from "./modules/characters/characters.context";
+import Loading from "./components/Loading/Loading";
 const LazyLogInPage = lazy(() => import("./pages/LoginPage/LoginPage"));
 const LazyHomePage = lazy(() => import("./pages/HomePage/HomePage"));
 const LazyFavoritesPage = lazy(
@@ -10,13 +10,11 @@ const LazyFavoritesPage = lazy(
 );
 
 function App() {
-
-  const {userInfo} = useContext(CharacterContext)
-  
+  const { userInfo } = useContext(CharacterContext);
 
   return (
     <div className="App">
-      <Suspense fallback={<LoginPage />}>
+      <Suspense fallback={<Loading />}>
         <Routes>
           {userInfo ? (
             <>

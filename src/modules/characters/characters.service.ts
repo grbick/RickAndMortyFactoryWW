@@ -1,13 +1,8 @@
+import { QueryParams } from "./characters.context";
 import { characterRepo } from "./characters.repo";
 
-// move to characters.types.ts
-interface IGetCharactersUrlParams {
-  page?: number;
-  name?: string;
-}
-
 class CharacterService {
-  getCharacters = (params: IGetCharactersUrlParams) => {
+  getCharacters = (params: QueryParams) => {
     return characterRepo.getCharacters(params);
   };
 
