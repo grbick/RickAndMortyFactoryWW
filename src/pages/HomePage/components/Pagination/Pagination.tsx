@@ -3,20 +3,27 @@ import { CharacterContext } from '../../../../modules/characters/characters.cont
 import PaginationButton from '../PaginationButton/PaginationButton'
 import './pagination.scss'
 
+
+
+// Pagination would probably go to components folder, even tho now its only used here
+// its more of a generic component than something home page specific
+// the fact that only home page uses it, does not mean its a home page component
+
 const Pagination = () => {
-
-
-   const {queryParams,pageCount,} = useContext(CharacterContext)
+ const {queryParams,pageCount} = useContext(CharacterContext)
 
   const currentPage = queryParams.page
-   const pageButtons= []
-    pageButtons.push(
-    <PaginationButton
-      key="Prev"
-      buttonContent="Prev"
-      buttonValue={currentPage === 1 ? currentPage : currentPage - 1}
-    />
-  );
+
+   const pageButtons= [
+      <PaginationButton
+        key="Prev"
+        buttonContent="Prev"
+        buttonValue={currentPage === 1 ? currentPage : currentPage - 1}
+      />
+    ]
+    
+
+
   if (pageCount <= 5 || currentPage === 1 || currentPage === 2) {
     for (let i = 1; i <= pageCount && i <= 5; i++) {
       pageButtons.push(

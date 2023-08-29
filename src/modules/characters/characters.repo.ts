@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// ideally this goes in characters.constants.ts
 const userCredentials = {
   username: "rick",
   password: "morty",

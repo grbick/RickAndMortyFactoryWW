@@ -1,7 +1,23 @@
-.loginPage{
-    height: 100vh;
-    width: 100%;
+// Component SCSS files should match folder name (capitalize)
+@mixin xy-center() {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  
+
+.loginPage {
+  height: 100vh;
+  width: 100%;
+
+  // google scss mixins, this is a prime example,
+  // we often want to center things using these 3 properties
+  // so we can use scss mixins to make scss code reusable
+
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+
+  @include xy-center(); // dont overdo it tho, often times we want our scss to be easily extensible
 }
+

@@ -8,6 +8,7 @@ import { useMediaQuery } from "react-responsive";
 const Modal = () => {
   const { modal, setModal, favorites } = useContext(CharacterContext);
 
+  // unused, delete or leave a comment if its left there on purpose
   const isFavorite = favorites.some((char) => char.id === modal?.id);
   const isGrid = useMediaQuery({ query: "(min-width:650px)" });
 
