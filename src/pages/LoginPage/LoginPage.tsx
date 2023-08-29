@@ -5,16 +5,28 @@ import { characterService } from "../../modules/characters/characters.service";
 import { CharacterContext } from "../../modules/characters/characters.context";
 
 const LoginPage: React.FC = () => {
+  // usual practice is to bind state instead of using useRef
+  // use useRef when state binding doesnt solve your problem
   const userRef = useRef<InputRef>(null)
   const passRef = useRef<InputRef>(null)
 
   const {setUserInfo} = useContext(CharacterContext)
 
 
+  // do you need to pass props or can you just use refs directly?
   function loginUser(username:string | undefined, password:string | undefined){
-    if (characterService.checkCredentials(username,password)) {setUserInfo(true)
-    sessionStorage.setItem('userInfo', JSON.stringify(true))
+    
+    if (characterService.checkCredentials(username,password)) {
+      // watch out for identation
+      setUserInfo(true)
+      sessionStorage.setItem('userInfo', JSON.stringify(true))
     }
+  }
+
+  // better to have as little of code possible in html part of TSX, unless its some specific case
+  // instead place it all in component typescript body and then reference the function in html
+  const handleKeyDown = (event:  React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter") loginUser(userRef.current?.input?.value, passRef.current?.input?.value);
   }
 
 
@@ -22,9 +34,7 @@ const LoginPage: React.FC = () => {
   return (
     <div className="loginPage">
       <Space direction="vertical" size="large"
-        onKeyDown={(e) => {
-          if (e.key === "Enter") loginUser(userRef.current?.input?.value, passRef.current?.input?.value);
-        }}>
+        onKeyDown={handleKeyDown}>
         <Input
           size="large"
           placeholder="username"

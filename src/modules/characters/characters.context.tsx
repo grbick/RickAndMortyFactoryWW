@@ -1,34 +1,15 @@
-import React, { useState, createContext } from "react";
+import React, { useState, createContext } from 'react';
+import { ApiData, Character, QueryParams } from './characters.types';
+import { characterService } from './characters.service';
 
-export interface ApiData {
-  results: Character[];
-}
-
-export interface Character {
-  id: number;
-  name: string;
-  status: string;
-  gender: string;
-  image: string;
-  species: string;
-  location: {
-    name: string;
-    url: string;
-  };
-}
-
-export interface QueryParams {
-  page: number;
-  name?: string;
-  status?: string;
-  species?: string;
-  gender?: string;
-}
+// This type should stay here beacuse its specific to react Context functionality
+// and describes only this context, therefore it is not a part of bussiness logic
+// that usually goes into characters.types.ts
 
 type characterContextType = {
-  characters: ApiData["results"] | null;
+  characters: ApiData['results'] | null;
   setCharacters: React.Dispatch<
-    React.SetStateAction<ApiData["results"] | null>
+    React.SetStateAction<ApiData['results'] | null>
   >;
   userInfo: boolean;
   setUserInfo: React.Dispatch<React.SetStateAction<boolean>>;
@@ -52,24 +33,49 @@ type CharacterProviderProps = {
 export const CharacterContext = createContext<characterContextType>(
   null as any
 );
+
+// keep similiar funcionalities grouped
+// here useState statements would go on top, then other computed values below them
 export const CharacterProvider = ({ children }: CharacterProviderProps) => {
-  const [characters, setCharacters] = useState<ApiData["results"] | null>(null);
-  const infoFromSession = sessionStorage.getItem("userInfo");
+  const infoFromSession = sessionStorage.getItem('userInfo');
   const initialInfo = infoFromSession ? JSON.parse(infoFromSession) : false;
+
+  // this should be a service function
+  // const favoritesFromSession = sessionStorage.getItem('favorites');
+  // const initialFavorites = favoritesFromSession
+  //   ? JSON.parse(favoritesFromSession)
+  //   : [];
+
+  const [characters, setCharacters] = useState<ApiData['results'] | null>(null);
   const [userInfo, setUserInfo] = useState<boolean>(initialInfo);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageCount, setPageCount] = useState<number>(1);
+
   const [queryParams, setQueryParams] = useState<QueryParams>({
     page: 1,
-    name: "",
+    name: '',
   });
-  const favoritesFromSession = sessionStorage.getItem("favorites");
-  const initialFavorites = favoritesFromSession
-    ? JSON.parse(favoritesFromSession)
-    : [];
-  const [favorites, setFavorites] = useState<Character[]>(initialFavorites);
+  
+  
+  const [favorites, setFavorites] = useState<Character[]>(
+    characterService.getInitialFavoritesFromLocalStorage()
+  );
   const [modal, setModal] = useState<Character | null>(null);
   const [sideModal, setSideModal] = useState<boolean>(false);
+
+  // Why do this? This is acceptable when you want to explicitly say that two types/interfaces
+  // have the same structure, but are completely different things
+  type NewType = QueryParams;
+
+  // example
+  interface IGlass {
+    handleShape: string;
+    material: string;
+  }
+
+  type IBowl = IGlass;
+
+  // end of example
 
   return (
     <CharacterContext.Provider

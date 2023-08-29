@@ -3,13 +3,24 @@ import "./sideModal.scss";
 import { Button, Input, Select, Space } from "antd";
 import {
   CharacterContext,
-  QueryParams,
+  
 } from "../../modules/characters/characters.context";
+import { QueryParams } from "../../modules/characters/characters.types";
+
+// no need to be in component
+const resetParams: QueryParams = {
+  page: 1,
+  name: "",
+  gender: "",
+  species: "",
+  status: "",
+};
 
 const SideModal = () => {
   const { Search } = Input;
   const { setSideModal, setQueryParams, queryParams } =
     useContext(CharacterContext);
+  
   function filterCharacters(filterObject: QueryParams) {
     setQueryParams({
       page: 1,
@@ -19,13 +30,8 @@ const SideModal = () => {
       status: filterObject.status,
     });
   }
-  const resetParams: QueryParams = {
-    page: 1,
-    name: "",
-    gender: "",
-    species: "",
-    status: "",
-  };
+  
+  // misleading, should be named searchTimeout to avoid confusion
   let search: any;
 
   return (
@@ -57,6 +63,7 @@ const SideModal = () => {
             }
             style={{ width: "100%" }}
             placeholder={"Gender"}
+            // put options in character.constants.ts then import here
             options={[
               { value: "Male", label: "Male" },
               { value: "Female", label: "Female" },
@@ -72,6 +79,7 @@ const SideModal = () => {
             }
             style={{ width: "100%" }}
             placeholder={"Status"}
+            // put options in character.constants.ts then import here
             options={[
               { value: "Dead", label: "Dead" },
               { value: "Alive", label: "Alive" },

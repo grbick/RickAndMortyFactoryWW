@@ -1,13 +1,16 @@
 import React, { useContext } from "react";
 import "./favoritesWrapper.scss";
 import {
-  Character,
+  
   CharacterContext,
 } from "../../../../modules/characters/characters.context";
 import CharacterCard from "../../../../components/CharacterCard/CharacterCard";
 import Loading from "../../../../components/Loading/Loading";
+import { Character } from "../../../../modules/characters/characters.types";
 const FavoritesWrapper = () => {
   const { favorites } = useContext(CharacterContext);
+  
+  // no need to assign to const
   const anyFavorites = favorites.length;
 
   if (!favorites) {
@@ -16,7 +19,8 @@ const FavoritesWrapper = () => {
 
   return (
     <div className="favoritesWrapper">
-      {anyFavorites ? (
+      {/* access it directly instead */}
+      {favorites.length ? (
         favorites?.map((char: Character, i: React.Key | null) => (
           <CharacterCard key={i} character={char} />
         ))

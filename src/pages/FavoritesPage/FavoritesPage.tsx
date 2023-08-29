@@ -6,6 +6,9 @@ import Modal from "../../components/Modal/Modal";
 import { CharacterContext } from "../../modules/characters/characters.context";
 
 const FavoritesPage = () => {
+  // modal should go into a seperate context
+  // often on projects we have a lot of modals, so we create
+  // a custom modal.context.ts
   const { modal } = useContext(CharacterContext);
 
   return (

@@ -11,6 +11,8 @@ const Header = () => {
   const { Search } = Input;
   const { setUserInfo, setQueryParams, setSideModal } =
     useContext(CharacterContext);
+
+  // misleading name
   let search: any;
 
   function logout() {
@@ -26,6 +28,7 @@ const Header = () => {
   }
 
   const isDropdown = useMediaQuery({ query: "(min-width:760px)" });
+
   const items: MenuProps["items"] = [
     {
       label: (
@@ -102,6 +105,7 @@ const Header = () => {
       <Search
         placeholder="search characters"
         style={{ width: 200 }}
+        // move logic to function in script code
         onChange={(e: any) => {
           clearTimeout(search);
           search = setTimeout(() => {

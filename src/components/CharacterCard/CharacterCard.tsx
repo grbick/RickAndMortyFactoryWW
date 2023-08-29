@@ -4,13 +4,42 @@ import { Card, Input, Typography, Select, Form, Button } from "antd";
 import { StarOutlined, StarFilled, EditOutlined } from "@ant-design/icons";
 import { useMediaQuery } from "react-responsive";
 import {
-  Character,
+  
   CharacterContext,
 } from "../../modules/characters/characters.context";
 import { useLocation } from "react-router-dom";
+import { Character } from "../../modules/characters/characters.types";
 interface CardPropsType {
   character: Character;
 }
+
+// example localStorage helper
+
+export class LocalStorageService {
+
+  getItem(key: string) {
+    const item = localStorage.getItem(key);
+    return (item) ? JSON.parse(item) : null;
+  }
+
+  setItem(key: string, value: any): void {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  removeItem(key: string): void {
+    localStorage.removeItem(key);
+  }
+
+  clear() {
+    localStorage.clear();
+  }
+}
+
+// end of example
+
+
+// order/mess of these expressions seems weird, 
+// see if it could be cleaned up a little bit or put into some sensible order
 
 const CharacterCard: React.FC<CardPropsType> = (props) => {
   const isGrid = useMediaQuery({ query: "(min-width:650px)" });
@@ -18,16 +47,22 @@ const CharacterCard: React.FC<CardPropsType> = (props) => {
     useContext(CharacterContext);
   const { Meta } = Card;
   const { Title } = Typography;
+  // should move logic to .service
   const isFavorite = favorites.some((char) => char.id === props.character.id);
   function addToFavorites(e: any) {
     e?.stopPropagation();
     const newFavorites = isFavorite
+    // should move logic to .service
       ? favorites.filter((char) => char.id !== props.character.id)
       : [...favorites, props.character];
     setFavorites(newFavorites);
+
+    // try and create a helper file inside of a "lib" folder, it should handle all storage manipulation
     sessionStorage.setItem("favorites", JSON.stringify(newFavorites));
   }
   const location = useLocation();
+  
+  
   const isFavoritesPage = location.pathname === "/favorites";
   function changeGender(value: string) {
     form.setFieldValue("gender", value);
@@ -60,6 +95,7 @@ const CharacterCard: React.FC<CardPropsType> = (props) => {
       }
       cover={<img alt="character" src={props.character.image} />}
       actions={
+        // move logic out of HTML, this makes it extra unreadable
         isFavoritesPage
           ? modal
             ? []
