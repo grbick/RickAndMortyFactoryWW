@@ -8,11 +8,12 @@ import {
   CharacterContext,
 } from "../../modules/characters/characters.context";
 import { useLocation } from "react-router-dom";
+import { characterService } from "../../modules/characters/characters.service";
 interface CardPropsType {
   character: Character;
 }
 
-const CharacterCard: React.FC<CardPropsType> = (props) => {
+export const CharacterCard: React.FC<CardPropsType> = (props) => {
   const isGrid = useMediaQuery({ query: "(min-width:650px)" });
   const { favorites, setFavorites, modal, setModal } =
     useContext(CharacterContext);
@@ -22,7 +23,7 @@ const CharacterCard: React.FC<CardPropsType> = (props) => {
   function addToFavorites(e: any) {
     e?.stopPropagation();
     const newFavorites = isFavorite
-      ? favorites.filter((char) => char.id !== props.character.id)
+      ? characterService.removeFromFavorites(favorites, props.character.id)
       : [...favorites, props.character];
     setFavorites(newFavorites);
     sessionStorage.setItem("favorites", JSON.stringify(newFavorites));
@@ -153,5 +154,3 @@ const CharacterCard: React.FC<CardPropsType> = (props) => {
     </Card>
   );
 };
-
-export default CharacterCard;

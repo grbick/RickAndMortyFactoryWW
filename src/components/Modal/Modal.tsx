@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import "./modal.scss";
 import { CharacterContext } from "../../modules/characters/characters.context";
-import CharacterCard from "../CharacterCard/CharacterCard";
+import { CharacterCard } from "../CharacterCard/CharacterCard";
 import { Button } from "antd";
 import { useMediaQuery } from "react-responsive";
 

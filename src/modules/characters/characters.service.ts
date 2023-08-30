@@ -1,4 +1,4 @@
-import { QueryParams } from "./characters.context";
+import { Character, QueryParams } from "./characters.context";
 import { characterRepo } from "./characters.repo";
 
 class CharacterService {
@@ -17,6 +17,10 @@ class CharacterService {
       return true;
     else return false;
   };
+
+  removeFromFavorites(favorites: Character[], charId: number) {
+    return favorites.filter((char) => char.id !== charId);
+  }
 }
 
 export const characterService = new CharacterService();
